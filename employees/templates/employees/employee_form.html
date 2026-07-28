@@ -1,0 +1,187 @@
+{% extends "employees/base.html" %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">
+            {% if employee %}
+                Update Employee
+            {% else %}
+                Add Employee
+            {% endif %}
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">First Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="first_name"
+                        value="{{ employee.first_name|default:'' }}"
+                        required
+                    >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="last_name"
+                        value="{{ employee.last_name|default:'' }}"
+                        required
+                    >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        name="email"
+                        value="{{ employee.email|default:'' }}"
+                        required
+                    >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Phone</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="phone"
+                        value="{{ employee.phone|default:'' }}"
+                        required
+                    >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Gender</label>
+
+                    <select class="form-select" name="gender">
+
+                        <option value="">Select Gender</option>
+
+                        <option value="Male"
+                            {% if employee and employee.gender == "Male" %}selected{% endif %}>
+                            Male
+                        </option>
+
+                        <option value="Female"
+                            {% if employee and employee.gender == "Female" %}selected{% endif %}>
+                            Female
+                        </option>
+
+                        <option value="Other"
+                            {% if employee and employee.gender == "Other" %}selected{% endif %}>
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Department</label>
+
+                    <select class="form-select" name="department">
+
+                        {% for department in departments %}
+
+                        <option
+                            value="{{ department.id }}"
+                            {% if employee and employee.department.id == department.id %}selected{% endif %}
+                        >
+                            {{ department.name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Date of Birth</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        name="date_of_birth"
+                        value="{{ employee.date_of_birth|date:'Y-m-d' }}"
+                    >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Hire Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        name="hire_date"
+                        value="{{ employee.hire_date|date:'Y-m-d' }}"
+                    >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Salary</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        class="form-control"
+                        name="salary"
+                        value="{{ employee.salary|default:'' }}"
+                    >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Profile Image</label>
+                    <input
+                        type="file"
+                        class="form-control"
+                        name="profile_image"
+                    >
+                </div>
+
+                <div class="col-12 mb-3">
+                    <label class="form-label">Address</label>
+
+                    <textarea
+                        class="form-control"
+                        name="address"
+                        rows="4"
+                    >{{ employee.address|default:'' }}</textarea>
+                </div>
+
+            </div>
+
+            <button class="btn btn-success" type="submit">
+
+                {% if employee %}
+                    Update Employee
+                {% else %}
+                    Add Employee
+                {% endif %}
+
+            </button>
+
+            <a href="{% url 'employee_list' %}" class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

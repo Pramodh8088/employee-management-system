@@ -1,0 +1,192 @@
+{% extends "employees/base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Employee List</h2>
+
+    <a href="{% url 'employee_create' %}" class="btn btn-primary">
+        Add Employee
+    </a>
+</div>
+
+<form method="GET" class="row g-3 mb-4">
+
+    <div class="col-md-6">
+        <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search Employee..."
+            value="{{ search_query }}"
+        >
+    </div>
+
+    <div class="col-auto">
+        <button type="submit" class="btn btn-success">
+            Search
+        </button>
+
+        <a href="{% url 'employee_list' %}" class="btn btn-secondary">
+            Clear
+        </a>
+    </div>
+
+</form>
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover table-striped align-middle">
+
+    <thead class="table-dark">
+
+        <tr>
+            <th>ID</th>
+            <th>Profile Image</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for employee in page_obj %}
+
+        <tr>
+
+            <td>{{ employee.id }}</td>
+
+            <td>
+
+                {% if employee.profile_image %}
+
+                    <img
+                        src="{{ employee.profile_image.url }}"
+                        alt="Profile Image"
+                        width="70"
+                        height="70"
+                        class="rounded-circle"
+                    >
+
+                {% else %}
+
+                    No Image
+
+                {% endif %}
+
+            </td>
+
+            <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+
+            <td>{{ employee.email }}</td>
+
+            <td>{{ employee.phone }}</td>
+
+            <td>{{ employee.department.name }}</td>
+
+            <td>
+                <a
+                    href="{% url 'employee_detail' employee.id %}"
+                    class="btn btn-info btn-sm"
+                >
+                    View
+                </a>
+                <a
+                    href="{% url 'employee_update' employee.id %}"
+                    class="btn btn-warning btn-sm"
+                >
+                    Edit
+                </a>
+
+                <a
+                    href="{% url 'employee_delete' employee.id %}"
+                    class="btn btn-danger btn-sm"
+                >
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="7" class="text-center">
+
+                No Employees Found
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+<nav aria-label="Employee Pagination">
+
+    <ul class="pagination justify-content-center">
+
+        {% if page_obj.has_previous %}
+
+        <li class="page-item">
+            <a class="page-link"
+               href="?search={{ search_query }}&page=1">
+                First
+            </a>
+        </li>
+
+        <li class="page-item">
+            <a class="page-link"
+               href="?search={{ search_query }}&page={{ page_obj.previous_page_number }}">
+                Previous
+            </a>
+        </li>
+
+        {% endif %}
+
+        <li class="page-item active">
+            <span class="page-link">
+                {{ page_obj.number }}
+            </span>
+        </li>
+
+        <li class="page-item disabled">
+            <span class="page-link">
+                of {{ page_obj.paginator.num_pages }}
+            </span>
+        </li>
+
+        {% if page_obj.has_next %}
+
+        <li class="page-item">
+            <a class="page-link"
+               href="?search={{ search_query }}&page={{ page_obj.next_page_number }}">
+                Next
+            </a>
+        </li>
+
+        <li class="page-item">
+            <a class="page-link"
+               href="?search={{ search_query }}&page={{ page_obj.paginator.num_pages }}">
+                Last
+            </a>
+        </li>
+
+        {% endif %}
+
+    </ul>
+
+</nav>
+
+{% endblock %}

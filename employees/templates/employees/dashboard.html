@@ -1,0 +1,134 @@
+{% extends "employees/base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card text-white bg-primary shadow">
+
+            <div class="card-body">
+
+                <h5>Total Employees</h5>
+
+                <h2>{{ employee_count }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card text-white bg-success shadow">
+
+            <div class="card-body">
+
+                <h5>Total Departments</h5>
+
+                <h2>{{ department_count }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card text-white bg-warning shadow">
+
+            <div class="card-body">
+
+                <h5>Total Salary</h5>
+
+                <h2>{{ total_salary }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+        Latest Employees
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>Name</th>
+
+                    <th>Email</th>
+
+                    <th>Department</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for employee in latest_employees %}
+
+                <tr>
+
+                    <td>
+
+                        {{ employee.first_name }}
+                        {{ employee.last_name }}
+
+                    </td>
+
+                    <td>
+
+                        {{ employee.email }}
+
+                    </td>
+
+                    <td>
+
+                        {{ employee.department.name }}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="3">
+
+                        No Employees Found
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
